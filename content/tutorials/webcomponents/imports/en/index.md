@@ -1,3 +1,9 @@
+<p class="notice warning" style="text-align:center">
+  HTML Imports are deprecated and was
+  <a href="https://www.chromestatus.com/feature/5144752345317376">removed</a>
+  from Chrome in February 2020.
+</p>
+
 <h2 id="why">Why imports?</h2>
 
 Think about how you load different types of resources on the web. For JS, we have `<script src>`. For CSS, your go-to is probably `<link rel="stylesheet">`. For images it's `<img>`. Video has `<video>`. Audio, `<audio>`.... Get to the point! The majority of the web's content has a simple and declarative way to load itself. Not so for HTML. Here's your options:
@@ -82,7 +88,7 @@ Let this sit. It's exciting stuff.
 <h3 id="events">Load/error events</h3>
 
 The `<link>` element fires a `load` event when an import is loaded successfully
-and `onerror` when the attempt fails (e.g. if the resource 404s). 
+and `onerror` when the attempt fails (e.g. if the resource 404s).
 
 Imports try to load immediately. An easy way avoid headaches
 is to use the `onload`/`onerror` attributes:
@@ -261,14 +267,14 @@ index.html
 
 <h3 id="include-elements">Registering custom elements</h3>
 
-[Custom Elements](tutorials/webcomponents/customelements/) is another Web Component technology that plays absurdly well with HTML Imports. [Imports can execute script](#includejs), so why not define + register your custom elements so users don't have to? Call it..."auto-registration". 
+[Custom Elements](tutorials/webcomponents/customelements/) is another Web Component technology that plays absurdly well with HTML Imports. [Imports can execute script](#includejs), so why not define + register your custom elements so users don't have to? Call it..."auto-registration".
 
 elements.html
 
     <script>
       // Define and register <say-hi>.
       var proto = Object.create(HTMLElement.prototype);
-      
+
       proto.createdCallback = function() {
         this.innerHTML = 'Hello, <b>' +
                          (this.getAttribute('name') || '?') + '</b>';
@@ -310,8 +316,8 @@ elements.html
       })();
     </script>
 
-This import defines (and registers) two elements, `<say-hi>` and `<shadow-element>`. The first shows a basic custom element that registers itself inside the import. The second example shows how to implement a custom element that creates Shadow DOM from a `<template>`, then registers itself. 
-  
+This import defines (and registers) two elements, `<say-hi>` and `<shadow-element>`. The first shows a basic custom element that registers itself inside the import. The second example shows how to implement a custom element that creates Shadow DOM from a `<template>`, then registers itself.
+
 The best part about registering custom elements inside an HTML import is that the the importer simply declares your element on their page. No wiring needed.
 
 index.html
@@ -350,7 +356,7 @@ In my opinion, this workflow alone makes HTML Imports an ideal way to share Web 
 
 It can be useful for one import to include another. For example, if you want to reuse or extend another component, use an import to load the other element(s).
 
-Below is a real example from [Polymer](http://polymer-project.org). It's a new tab component (`<paper-tabs>`) that reuses a layout and selector component. The dependencies are managed using HTML Imports. 
+Below is a real example from [Polymer](http://polymer-project.org). It's a new tab component (`<paper-tabs>`) that reuses a layout and selector component. The dependencies are managed using HTML Imports.
 
 paper-tabs.html (simplified):
 
@@ -478,7 +484,7 @@ The same concept holds true for the import document. Unless you append it's cont
 
 <h4 id="perf-rendering">Imports block rendering</h4>
 
-_Imports block rendering of the main page_. This is similar to what `<link rel="stylesheet">` do. The reason the browser blocks rendering on stylesheets in the first place is to minimize FOUC. Imports behave similarly because they can contain stylsheets. 
+_Imports block rendering of the main page_. This is similar to what `<link rel="stylesheet">` do. The reason the browser blocks rendering on stylesheets in the first place is to minimize FOUC. Imports behave similarly because they can contain stylsheets.
 
 To be completely asynchronous and not block the parser or rendering, use the `async` attribute:
 
@@ -531,7 +537,7 @@ Here's an example:
         // Bring in the import content.
         var link = document.querySelector('link[rel="import"]');
         var post = link.import.querySelector('#blog-post');
-        
+
         var container = document.querySelector('#container');
         container.appendChild(post.cloneNode(true));
       </script>
@@ -566,7 +572,7 @@ index.html
 
 **Scenario #2: you *have* script in `<head>` or inlined in `<body>`**
 
-If you have an import that takes a long time to load, the first `<script>` that follows it on the page will block the page from rendering. Google Analytics for example, 
+If you have an import that takes a long time to load, the first `<script>` that follows it on the page will block the page from rendering. Google Analytics for example,
 recommends putting the tracking code in the `<head>`, If you can't avoid putting `<script>` in the `<head>`, dynamically adding the import will prevent blocking the page:
 
     <head>
@@ -651,4 +657,4 @@ for the platform.
 
 - **Parallelizes HTML parsing** - first time the browser has been able to run two (or more) HTML parsers in parallel.
 
-- **Enables switching between debug and non-debug modes** in an app, just by changing the import target itself. Your app doesn't need to know if the import target is a bundled/compiled resource or an import tree. 
+- **Enables switching between debug and non-debug modes** in an app, just by changing the import target itself. Your app doesn't need to know if the import target is a bundled/compiled resource or an import tree.
